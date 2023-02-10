@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      var r = document.querySelector(':root');
+      function cargarImagen() {
+        //calcula la anchura y la altura del objeto "anaglyph"
+        r.style.setProperty('--anaglyph-width', document.getElementById('invisible').naturalWidth/2+'px' );
+        r.style.setProperty('--anaglyph-height', document.getElementById('invisible').naturalHeight+'px' );
+        //carga la imagen
+        r.style.setProperty('--anaglyph-image', "url("+document.getElementById('invisible').src+")" );
+      }
+    </script>
+    <style>
+      :root { --anaglyph-width; --anaglyph-height; --anaglyph-image; }
+      .anaglyph { position: relative; display: inline-block; overflow: hidden; width: var(--anaglyph-width); height: var(--anaglyph-height); }
+      .glyph { background-image: var(--anaglyph-image); position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; mix-blend-mode: screen;}
+      .left {  background-position: left 0; }
+      .right { background-position: right 0; }
+    </style>
+  </head>
+
+  <body>
+    <!-- ========== TRUCO PARA FORZAR LA CARGA DE LA IMAGEN ====== -->
+    <img id="invisible" style="display: none" onload = "cargarImagen()">
+
+    <!-- ========== EL TEXTO DE LA PÁGINA EMPIEZA AQUÍ =========== -->
+    <h3>Anaglyph method comparison. A new twist: anaglyphs on the fly</h3>
+    <p>The purpose of this web page is to generate anaglyphs following the various methods exposed by Peter Wimmer on his article 
+<a href="https://3dtv.at/Knowhow/AnaglyphComparison_en.aspx">Anaglyph Methods Comparison</a>.
+    <p>Anaglyphs here are built on the fly using HTML5, CSS, JavaScript and some SVG filters that do the magic.
+    <p><p>Type a link to a stereoscopic pair in the box below and click the button <i>Anaglyph it!</i>
+    <p><input type="text" id="url-image" size="75%" value="https://stereosite.com/wp-content/uploads/2022/11/barcelona-5-1024x576.jpeg">
+    <button onclick="document.getElementById('invisible').src = document.getElementById('url-image').value">Anaglyph it!</button>
+    <p>The link by default is provided just in case you haven't got any on hand. It points to a stereoscopic pair by Pascal Martiné —I still have to ask him for his consent.
+    <p><small>The code of this page is on repository <a href="https://github.com/raphikWasHere/anaglyph-method-comparison/">https://github.com/raphikWasHere/anaglyph-method-comparison/</a></small>
+    <!-- ========== EL TEXTO DE LA PÁGINA TERMINA AQUÍ =========== -->
+
+    <!-- ========== TRUE ANAGLYPH ================================ -->
+    <p><b>True Anaglyph</b></br>
+    <object class="anaglyph">
+      <img class="left glyph" style="filter: url(#leftTrue); ">
+      <img class="right glyph" style="filter: url(#rightTrue); "">
+    </object>
+    <svg width=0 height=0>
+      <filter id="leftTrue"><feColorMatrix type="matrix"
+       values="0.299 0.547 0.114 0 0
+               0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 1 0" />
+      </filter>
+      <filter id="rightTrue"><feColorMatrix type="matrix"
+       values="0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 0 0
+               0.299 0.547 0.114 0 0
+               0.000 0.000 0.000 1 0" />
+      </filter>
+    </svg>
+
+    <!-- ========== GREY ANAGLYPH ================================ -->
+    <p><b>Grey Anaglyph</b></br>
+    <object class="anaglyph">
+      <img class="left glyph" style="filter: url(#leftGrey); ">
+      <img class="right glyph" style="filter: url(#rightGrey); "">
+    </object>
+    <svg width=0 height=0>
+      <filter id="leftGrey"><feColorMatrix type="matrix"
+       values="0.299 0.547 0.114 0 0
+               0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 1 0" />
+      </filter>
+      <filter id="rightGrey"><feColorMatrix type="matrix"
+       values="0.000 0.000 0.000 0 0
+               0.299 0.547 0.114 0 0
+               0.299 0.547 0.114 0 0
+               0.000 0.000 0.000 1 0" />
+      </filter>
+    </svg>
+
+    <!-- ========== COLOR ANAGLYPH =============================== -->
+    <p><b>Color Anaglyph</b></br>
+    <object class="anaglyph">
+      <img class="left glyph" style="filter: url(#leftColor); ">
+      <img class="right glyph" style="filter: url(#rightColor); "">
+    </object>
+
+    <svg width=0 height=0>
+      <filter id="leftColor"><feColorMatrix type="matrix"
+       values="1.000 0.000 0.000 0 0
+               0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 1 0" />
+      </filter>
+      <filter id="rightColor"><feColorMatrix type="matrix"
+       values="0.000 0.000 0.000 0 0
+               0.000 1.000 0.000 0 0
+               0.000 0.000 1.000 0 0
+               0.000 0.000 0.000 1 0" />
+      </filter>
+    </svg>
+
+    <!-- ========== HALF COLOR ANAGLYPH ========================== -->
+    <p><b>Half Color Anaglyph</b></br>
+    <object class="anaglyph">
+      <img class="left glyph" style="filter: url(#leftHalfColor); ">
+      <img class="right glyph" style="filter: url(#rightHalfColor); "">
+    </object>
+    <svg width=0 height=0>
+      <filter id="leftHalfColor"><feColorMatrix type="matrix"
+       values="0.299 0.547 0.114 0 0
+               0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 1 0" />
+      </filter>
+      <filter id="rightHalfColor"><feColorMatrix type="matrix"
+       values="0.000 0.000 0.000 0 0
+               0.000 1.000 0.000 0 0
+               0.000 0.000 1.000 0 0
+               0.000 0.000 0.000 1 0" />
+      </filter>
+    </svg>
+
+    <!-- ========== OPTIMIZED ANAGLYPH =========================== -->
+    <p><b>Optimized Anaglyph</b></br>
+    <object class="anaglyph">
+      <img class="left glyph" style="filter: url(#leftOptimized); ">
+      <img class="right glyph" style="filter: url(#rightOptimized) url(#gammaRedChannel); ">
+    </object>
+
+    <svg width=0 height=0>
+      <filter id="leftOptimized"><feColorMatrix type="matrix"
+       values="0.000 0.700 0.300 0 0
+               0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 0 0
+               0.000 0.000 0.000 1 0" />
+      </filter>
+      <filter id="rightOptimized"><feColorMatrix type="matrix"
+       values="0.000 0.000 0.000 0 0
+               0.000 1.000 0.000 0 0
+               0.000 0.000 1.000 0 0
+               0.000 0.000 0.000 1 0" />
+      </filter>
+      <filter id="gammaRedChannel">
+        <feComponentTransfer>
+          <feFuncR type="gamma" amplitude="1.5"></feFuncR>
+          <feFuncG type="gamma" amplitude="1.5"></feFuncG>
+          <feFuncB type="gamma" amplitude="1.5"></feFuncB>
+        </feComponentTransfer>
+      </filter>
+    </svg>
+    <p><small>:P 2023 raphik</small>
+    <p>
+   </body>
+</html>
+
+
+
